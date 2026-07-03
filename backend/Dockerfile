@@ -19,7 +19,7 @@ RUN mvn clean package -DskipTests
 # STAGE 2: Run the application
 # We use a smaller, lightweight JRE (Java Runtime Environment) image just to run the compiled app.
 # This makes the final Docker image much smaller and more secure.
-FROM eclipse-temurin:17-jre-alpine
+FROM eclipse-temurin:17-jre-jammy
 
 # Set the working directory
 WORKDIR /app
