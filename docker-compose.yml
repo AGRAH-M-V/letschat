@@ -18,9 +18,8 @@ services:
     ports:
       - "8080:8080" # Maps localhost:8080 to container's port 8080
     environment:
-      # This environment variable overrides 'localhost' in application.properties
-      # 'mongodb' is the name of the service above. Docker network resolves this to the DB's IP.
-      - MONGODB_HOST=mongodb
+      # Explicitly set the MongoDB URI to bypass application.properties
+      - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/chatdb
     depends_on:
       - mongodb # Ensures MongoDB starts before the backend
 
