@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  # The Database Service
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017" # Maps localhost:27017 to container's port 27017
+    volumes:
+      - mongodb_data:/data/db # Persists data even if the container is destroyed
+
+  # The Backend Spring Boot Service
+  backend:
+    build:
+      context: ./backend # Looks for the Dockerfile in the backend directory
+    container_name: backend
+    ports:
+      - "8080:8080" # Maps localhost:8080 to container's port 8080
+    environment:
+      # This environment variable overrides 'localhost' in application.properties
+      # 'mongodb' is the name of the service above. Docker network resolves this to the DB's IP.
+      - MONGODB_HOST=mongodb
+    depends_on:
+      - mongodb # Ensures MongoDB starts before the backend
+
+  # The Frontend Angular Service
+  frontend:
+    build:
+      context: ./frontend # Looks for the Dockerfile in the frontend directory
+    container_name: frontend
+    ports:
+      - "80:80" # Maps localhost:80 to container's port 80
+    depends_on:
+      - backend # Ensures backend starts before the frontend
+
+# Define the named volume for MongoDB data persistence
+volumes:
+  mongodb_data:

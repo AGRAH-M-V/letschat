@@ -1,0 +1,40 @@
+<div class="chat-container">
+  <div class="chat-header">
+    <h1>Global Chat</h1>
+    <div class="user-badge">
+      <span class="status-indicator"></span>
+      {{ username }}
+    </div>
+  </div>
+
+  <div class="chat-messages" #scrollMe>
+    <div *ngFor="let msg of messages" 
+         class="message" 
+         [ngClass]="{'my-message': msg.username === username}">
+      <div class="message-meta">
+        <span class="sender">{{ msg.username }}</span>
+        <span class="time" *ngIf="msg.timestamp">{{ msg.timestamp | date:'shortTime' }}</span>
+      </div>
+      <div class="message-bubble">
+        {{ msg.content }}
+      </div>
+    </div>
+    <div *ngIf="messages.length === 0" class="empty-state">
+      <p>No messages yet. Start the conversation!</p>
+    </div>
+  </div>
+
+  <div class="chat-input">
+    <input type="text" 
+           [(ngModel)]="newMessageContent" 
+           (keyup.enter)="sendMessage()" 
+           placeholder="Type a message..." 
+           autocomplete="off">
+    <button (click)="sendMessage()" [disabled]="!newMessageContent.trim()">
+      <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="22" y1="2" x2="11" y2="13"></line>
+        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+      </svg>
+    </button>
+  </div>
+</div>
